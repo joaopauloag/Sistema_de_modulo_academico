@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public abstract class Usuario {
 
-	private long cpf;
+	private String cpf;
 	private String nome;
 	private String email;
 	private String senha;
@@ -14,12 +14,14 @@ public abstract class Usuario {
 	public Usuario() {
 	}
 	
-	public long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 	
-	public void setCpf(int cpf) {
-		this.cpf = cpf;
+	public void setCpf(String cpf) {
+		if(cpf.length() == 11) {
+			this.cpf = cpf;
+		}
 	}
 	
 	public String getNome() {
@@ -77,8 +79,10 @@ public abstract class Usuario {
 	public void criarPerfil() {
 		System.out.print("\nNome completo: ");
 		this.nome = entrada.nextLine();
-		System.out.print("\nCPF: ");
-		this.cpf = entrada.nextLong();
+		do {
+			System.out.print("\nCPF (somente os 11 digitos): ");
+			this.cpf = entrada.nextLine();
+		} while(this.cpf.length() != 11);
 	}
 	
 	public void alterarSenha() {

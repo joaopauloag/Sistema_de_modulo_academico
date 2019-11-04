@@ -1,10 +1,12 @@
 package sistema;
 
+import java.util.Scanner;
+
 public class Professor extends Usuario {
 
 	private int qtdDisciplinas;
 	private String[] disciplinas;
-	
+	private Scanner entrada;
 	
 	public Professor() {
 		super();
@@ -41,6 +43,30 @@ public class Professor extends Usuario {
 	public void menu() {
 		// TODO Auto-generated method stub
 		
+		int opcao;
+		
+		entrada = new Scanner(System.in);
+		
+		while(true) {
+			System.out.println("\n(1) Lancar notas");
+			System.out.println("(2) Lancar frequencia");
+			System.out.println("(3) Alterar senha");
+			System.out.println("(0) SAIR");
+			
+			opcao = entrada.nextInt();
+			
+			if(opcao == 1) {
+				Sistema.lancarNota();
+			} else if(opcao == 2) {
+				Sistema.lancarFrequencia();
+			} else if(opcao == 3) {
+				super.alterarSenha();
+			} else if(opcao == 0) {
+				return;
+			} else {
+				System.out.println("\nOpcao invalida!");
+			}
+		}
 	}
 
 	

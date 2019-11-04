@@ -157,4 +157,40 @@ public class Sistema {
 		System.out.println("chamou");
 	}
 	
+	public static void lancarNota() {
+		System.out.println("chamou");
+	}
+	
+	public static void lancarFrequencia() {
+		System.out.println("chamou");
+	}
+	
+	public static void solicitarMatricula(int matricula) {
+		
+		String disciplina;
+		entrada = new Scanner(System.in);
+		
+		if(!ePeriodoDeMatricula) {
+			System.out.println("\nSem direito a matricula.");
+			return;
+		}
+		System.out.println("\nListando disciplinas:\n");
+		for(Disciplina d : disciplinas) {
+			System.out.println(d.getNomeDisciplina());
+		}
+		System.out.print("\nEntre com o nome da disciplina: ");
+		disciplina = entrada.nextLine();
+		for(Disciplina d : disciplinas) {
+			if(d.getNomeDisciplina().equalsIgnoreCase(disciplina)) {
+				d.setSolicitacoes(matricula);
+				System.out.println("\nSolicitacao enviada! Aguarde a avaliacao do coordenador.");
+				return;
+			}
+		}
+		System.out.println("\nDisciplina nao encontrada!");
+	}
+	
+	public static void exibirBoletim() {
+		System.out.println("chamou");
+	}
 }

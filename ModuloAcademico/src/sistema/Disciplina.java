@@ -1,5 +1,7 @@
 package sistema;
 
+import java.util.ArrayList;;
+
 public class Disciplina {
 
 	private String nomeDisciplina;
@@ -7,11 +9,13 @@ public class Disciplina {
 	private int[] alunosMatriculados;
 	private int[] faltasAlunos;
 	private double[][] notasAlunos;
+	private ArrayList<Integer> solicitacoes;
 	
 	public Disciplina() {
 		alunosMatriculados = new int[30];
 		faltasAlunos = new int[30];
 		notasAlunos = new double[30][5];
+		solicitacoes = new ArrayList<Integer>();
 	}
 
 	public String getNomeDisciplina() {
@@ -54,6 +58,17 @@ public class Disciplina {
 		this.notasAlunos = notasAlunos;
 	}
 
+	
+	public ArrayList<Integer> getSolicitacoes() {
+		return solicitacoes;
+	}
+	
+
+	public void setSolicitacoes(int solicitacao) {
+		this.solicitacoes.add(solicitacao);
+	}
+
+	
 
 
 	
