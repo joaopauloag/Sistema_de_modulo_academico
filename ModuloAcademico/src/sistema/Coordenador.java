@@ -27,12 +27,13 @@ public class Coordenador extends Usuario {
 		entrada = new Scanner(System.in);
 		
 		while(true) {
-			System.out.println("\n(1) Criar nova turma");
+			System.out.println("\n*****************************************");
+			System.out.println("(1) Criar nova turma");
 			System.out.println("(2) Abrir / Encerrar periodo de matricula");
 			System.out.println("(3) Avaliar solicitacao de matricula");
 			System.out.println("(4) Alterar senha");
 			System.out.println("(0) SAIR");
-			
+			System.out.println("*****************************************");
 			opcao = entrada.nextInt();
 			
 			if(opcao == 1) {
@@ -40,7 +41,7 @@ public class Coordenador extends Usuario {
 			} else if(opcao == 2) {
 				Sistema.abrirEncerrarMatricula();
 			} else if(opcao == 3) {
-				Sistema.avaliarSolicitacaoDeMatricula();
+				Sistema.verSolicitacoes();
 			} else if(opcao == 4) {
 				super.alterarSenha();
 			} else if(opcao == 0) {

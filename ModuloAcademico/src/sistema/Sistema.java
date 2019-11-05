@@ -111,7 +111,7 @@ public class Sistema {
 				}
 			}
 			if(!encontrouProfessor) {
-				System.out.println("\nNao ha professores disponiveis.");
+				System.out.println("\nNao ha professores disponiveis. A turma nao pode ser criada!");
 				return;
 			}
 			System.out.print("\nEscolha o professor: ");
@@ -120,6 +120,7 @@ public class Sistema {
 				if(u instanceof Professor) {
 					if(u.getNome().equalsIgnoreCase(nome)) {
 						novaDisciplina.setNomeProfessor(nome);
+						((Professor) u).setQtdDisciplinas(((Professor) u).getQtdDisciplinas() + 1);
 						alocouProfessor = true;
 						break;
 					}
@@ -153,8 +154,50 @@ public class Sistema {
 		System.out.println((ePeriodoDeMatricula)?  "Aberto" : "Fechado");
 	}
 	
-	public static void avaliarSolicitacaoDeMatricula() {
-		System.out.println("chamou");
+	public static void verSolicitacoes() {
+		
+		int i;
+		String nomeDisciplina;
+		
+		for(Disciplina d : disciplinas) {
+			if(d.getSolicitacoes() != null) {
+				ArrayList<Integer> solicitacoes = d.getSolicitacoes();
+				nomeDisciplina = d.getNomeDisciplina();
+				System.out.println("\n\n\nDisciplina: " + d.getNomeDisciplina());
+				for (i = 0; i < solicitacoes.size(); i++) {
+					avaliarSolicitacao(solicitacoes.get(i), nomeDisciplina);
+					solicitacoes.remove(i);
+					i--;
+				}
+				if(i == 0) {
+					System.out.println("\nNenhuma solicitacao.");
+				}
+			}
+		}
+	}
+	
+	private static void avaliarSolicitacao(int i, String nomeDisciplina) {
+		
+		String opcao;
+		entrada = new Scanner(System.in);
+		
+		for(Usuario u : usuarios) {
+			if(u instanceof Aluno) {
+				if(((Aluno) u).getMatricula() == i) {
+					System.out.println("\nPeriodo: " + ((Aluno) u).getPeriodo() + "\tAluno: " + u.getNome());
+					System.out.print("(S) para aceitar, qualquer outra tecla para recusar: ");
+					opcao = entrada.nextLine();
+					if(opcao.equalsIgnoreCase("s")) {
+						((Aluno) u).setDisciplinas(nomeDisciplina);
+						((Aluno) u).setQtdDisciplina(((Aluno) u).getQtdDisciplina() + 1);
+						System.out.println("\nPedido aceito.\n");
+						return;
+					}
+					System.out.println("\nPedido recusado.\n");
+					return;
+				}
+			}
+		}
 	}
 	
 	public static void lancarNota() {
@@ -165,13 +208,16 @@ public class Sistema {
 		System.out.println("chamou");
 	}
 	
-	public static void solicitarMatricula(int matricula) {
+	public static void solicitarMatricula(int matricula, int qtdDisciplinas) {
 		
 		String disciplina;
 		entrada = new Scanner(System.in);
-		
+
 		if(!ePeriodoDeMatricula) {
 			System.out.println("\nSem direito a matricula.");
+			return;
+		} else if(qtdDisciplinas == 8) {
+			System.out.println("\nVoce ja esta com a carga horaria maxima!");
 			return;
 		}
 		System.out.println("\nListando disciplinas:\n");
@@ -190,7 +236,7 @@ public class Sistema {
 		System.out.println("\nDisciplina nao encontrada!");
 	}
 	
-	public static void exibirBoletim() {
+	public static void exibirBoletim(int matricula) {
 		System.out.println("chamou");
 	}
 }

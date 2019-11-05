@@ -59,15 +59,15 @@ public abstract class Usuario {
 		entrada = new Scanner(System.in);
 		
 		System.out.print("\nInforme o seu email: ");
-		this.email = entrada.nextLine();
+		email = entrada.nextLine();
 		while(true) {
 			do {
 				System.out.print("\nCrie uma senha com no minimo 6 digitos: ");
-				this.senha = entrada.nextLine();
-			} while(this.senha.length() < 6);
+				senha = entrada.nextLine();
+			} while(senha.length() < 6);
 			System.out.print("\nConfirme a sua senha: ");
 			confirmaSenha = entrada.nextLine();
-			if(this.senha.equals(confirmaSenha)) {
+			if(senha.equals(confirmaSenha)) {
 				break;
 			}
 			System.out.println("\nSenha incorreta!");
@@ -78,11 +78,11 @@ public abstract class Usuario {
 	
 	public void criarPerfil() {
 		System.out.print("\nNome completo: ");
-		this.nome = entrada.nextLine();
+		nome = entrada.nextLine();
 		do {
 			System.out.print("\nCPF (somente os 11 digitos): ");
-			this.cpf = entrada.nextLine();
-		} while(this.cpf.length() != 11);
+			cpf = entrada.nextLine();
+		} while(cpf.length() != 11);
 	}
 	
 	public void alterarSenha() {
@@ -92,18 +92,18 @@ public abstract class Usuario {
 		
 		System.out.println("\nEntre com sua senha atual: ");
 		confirmaSenha = entrada.nextLine();
-		if(!this.senha.equals(confirmaSenha)) {
+		if(!senha.equals(confirmaSenha)) {
 			System.out.println("\nSenha incorreta!");
 			return;
 		}
 		while(true) {
 			do {
 				System.out.print("\nEntre com sua nova senha (minimo de 6 digitos): ");
-				this.senha = entrada.nextLine();
-			} while(this.senha.length() < 6);
+				senha = entrada.nextLine();
+			} while(senha.length() < 6);
 			System.out.print("\nConfirme a sua nova senha: ");
 			confirmaSenha = entrada.nextLine();
-			if(this.senha.equals(confirmaSenha)) {
+			if(senha.equals(confirmaSenha)) {
 				System.out.println("\nSenha alterada!");
 				break;
 			}

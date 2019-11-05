@@ -48,10 +48,12 @@ public class Professor extends Usuario {
 		entrada = new Scanner(System.in);
 		
 		while(true) {
-			System.out.println("\n(1) Lancar notas");
+			System.out.println("\n*********************");
+			System.out.println("(1) Lancar notas");
 			System.out.println("(2) Lancar frequencia");
 			System.out.println("(3) Alterar senha");
 			System.out.println("(0) SAIR");
+			System.out.println("*********************");
 			
 			opcao = entrada.nextInt();
 			

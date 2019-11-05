@@ -15,10 +15,12 @@ public class Inicio {
 		entrada = new Scanner(System.in);
 		
 		while(true) {
-			System.out.println("\n\nMODULO ACADEMICO\n");
+			System.out.println("\n\n*****************");
+			System.out.println("MODULO ACADEMICO\n");
 			System.out.println("(1) Criar conta");
 			System.out.println("(2) Login");
 			System.out.println("(0) SAIR");
+			System.out.println("*****************");
 			
 			opcao = entrada.nextInt();
 			
