@@ -8,10 +8,14 @@ public abstract class Usuario {
 	private String nome;
 	private String email;
 	private String senha;
-	private Scanner entrada;
+	protected Scanner entrada;
 	
 	
 	public Usuario() {
+		this.cpf = null;
+		this.nome = null;
+		this.email = null;
+		this.senha = null;
 	}
 	
 	public String getCpf() {
@@ -53,13 +57,11 @@ public abstract class Usuario {
 	}
 	
 	
-	public void criarLogin() {
+	public void criarPerfil() {
 		
 		String confirmaSenha;
 		entrada = new Scanner(System.in);
 		
-		System.out.print("\nInforme o seu email: ");
-		email = entrada.nextLine();
 		while(true) {
 			do {
 				System.out.print("\nCrie uma senha com no minimo 6 digitos: ");
@@ -73,10 +75,6 @@ public abstract class Usuario {
 			System.out.println("\nSenha incorreta!");
 		}
 		System.out.println("\nBem vindo ao Modulo Academico! Agora informe os seguintes dados:");
-		criarPerfil();
-	}
-	
-	public void criarPerfil() {
 		System.out.print("\nNome completo: ");
 		nome = entrada.nextLine();
 		do {

@@ -30,13 +30,13 @@ public class Sistema {
 			System.out.println("(0) VOLTAR");
 			opcao = entrada.nextInt();
 			
-			if(opcao == 1) {
-				novoUsuario = new Aluno();
-			} else if(opcao == 2) {
-				novoUsuario = new Professor();
+			if(opcao == 1 || opcao == 2) {
+				procurarUsuario();
 			} else if(opcao == 3) {
 				if(procurarCoordenador()) {
 					novoUsuario = new Coordenador();
+					novoUsuario.criarConta();
+					usuarios.add(novoUsuario);
 				} else {
 					System.out.println("\nO coordenador ja esta cadastrado!");
 					continue;
@@ -47,13 +47,32 @@ public class Sistema {
 				System.out.println("\nOpcao invalida!");
 				continue;
 			}
-			novoUsuario.criarConta();
-			usuarios.add(novoUsuario);
 			break;
 		}
 	}
 	
-	public boolean procurarCoordenador() {
+	private void procurarUsuario() {
+		
+		String email;
+		entrada = new Scanner(System.in);
+		
+		System.out.print("\nEntre com seu email: ");
+		email = entrada.nextLine();
+		
+		for (Usuario u : usuarios) {
+			if(u.getEmail().equals(email)) {
+				if(u.getSenha() != null) {
+					System.out.println("\nEste usuario ja existe!");
+					return;
+				}
+				u.criarConta();
+				return;
+			}
+		}
+		System.out.println("\nSeu acesso ainda nao foi concedido!");
+	}
+	
+	private boolean procurarCoordenador() {
 		
 		for(Usuario u : usuarios) {
 			if(u instanceof Coordenador) {
@@ -74,7 +93,7 @@ public class Sistema {
 		email = entrada.nextLine();
 		
 		for(Usuario u : usuarios) {
-			if(u.getEmail().equals(email)) {
+			if(u.getEmail().equals(email) && u.getSenha() != null) {
 				while(true) {
 					System.out.print("\nSenha: ");
 					senha = entrada.nextLine();
@@ -89,12 +108,10 @@ public class Sistema {
 		System.out.println("\nUsuario nao encontrado!");		
 	}
 	
-	
 	public static void criarNovaTurma() {
 		
 		String nome;
 		boolean encontrouProfessor = false;
-		boolean alocouProfessor = false;
 		Disciplina novaDisciplina = new Disciplina();
 		entrada = new Scanner(System.in);
 		
@@ -104,7 +121,7 @@ public class Sistema {
 			System.out.println("\nProfessores disponiveis:\n");
 			for(Usuario u : usuarios) {
 				if(u instanceof Professor) {
-					if(((Professor) u).getQtdDisciplinas() < 4) {
+					if(((Professor) u).getQtdDisciplinas() < 4 && u.getNome() != null) {
 						System.out.println(u.getNome());
 						encontrouProfessor = true;
 					}
@@ -118,21 +135,62 @@ public class Sistema {
 			nome = entrada.nextLine();
 			for(Usuario u : usuarios) {
 				if(u instanceof Professor) {
-					if(u.getNome().equalsIgnoreCase(nome)) {
+					if(u.getNome() == null) continue;
+					if(u.getNome().equals(nome)) {
 						novaDisciplina.setNomeProfessor(nome);
 						((Professor) u).setQtdDisciplinas(((Professor) u).getQtdDisciplinas() + 1);
-						alocouProfessor = true;
-						break;
+						disciplinas.add(novaDisciplina);
+						System.out.println("\nTurma criada!");
+						return;
 					}
 				}
 			}
-			if(alocouProfessor) {
-				break;
-			}
-			System.out.println("\nProfessor nao encontrado!");
+			System.out.print("\nProfessor nao encontrado!");
 		}
-		disciplinas.add(novaDisciplina);
-		System.out.println("\nTurma criada!");
+	}
+	
+	public static void adicionarUsuarioAoSistema() {
+		
+		char opcao;
+		Usuario novoUsuario = null;
+		entrada = new Scanner(System.in);
+		
+		while(true) {
+			System.out.println("\n(1) Aluno");
+			System.out.println("(2) Professor");
+			opcao = entrada.nextLine().charAt(0);
+			
+			if(opcao == '1') {
+				novoUsuario = new Aluno();
+			} else if(opcao == '2') {
+				novoUsuario = new Professor();
+			} else {
+				System.out.println("\nOpcao invalida!");
+				continue;
+			}
+			while(!procurarEmail(novoUsuario)) {
+			}
+			usuarios.add(novoUsuario);
+			System.out.println("\nUsuario adicionado.");
+			break;
+		}
+	}
+	
+	private static boolean procurarEmail(Usuario novoUsuario) {
+		
+		String email;
+		entrada = new Scanner(System.in);
+		System.out.print("\nInsira o email: ");
+		email = entrada.nextLine();
+		
+		for(Usuario u : usuarios) {
+			if(u.getEmail().equalsIgnoreCase(email)) {
+				System.out.println("\nEste email de usuario ja existe.");
+				return false;
+			}
+		}
+		novoUsuario.setEmail(email);
+		return true;
 	}
 	
 	public static void abrirEncerrarMatricula() {
@@ -157,15 +215,13 @@ public class Sistema {
 	public static void verSolicitacoes() {
 		
 		int i;
-		String nomeDisciplina;
 		
 		for(Disciplina d : disciplinas) {
 			if(d.getSolicitacoes() != null) {
 				ArrayList<Integer> solicitacoes = d.getSolicitacoes();
-				nomeDisciplina = d.getNomeDisciplina();
 				System.out.println("\n\n\nDisciplina: " + d.getNomeDisciplina());
 				for (i = 0; i < solicitacoes.size(); i++) {
-					avaliarSolicitacao(solicitacoes.get(i), nomeDisciplina);
+					avaliarSolicitacao(solicitacoes.get(i), d);
 					solicitacoes.remove(i);
 					i--;
 				}
@@ -176,7 +232,7 @@ public class Sistema {
 		}
 	}
 	
-	private static void avaliarSolicitacao(int i, String nomeDisciplina) {
+	private static void avaliarSolicitacao(int i, Disciplina d) {
 		
 		String opcao;
 		entrada = new Scanner(System.in);
@@ -188,8 +244,13 @@ public class Sistema {
 					System.out.print("(S) para aceitar, qualquer outra tecla para recusar: ");
 					opcao = entrada.nextLine();
 					if(opcao.equalsIgnoreCase("s")) {
-						((Aluno) u).setDisciplinas(nomeDisciplina);
+						if(d.alunosMatriculadosCheio()) {
+							System.out.println("\nA turma ja esta lotada!\n");
+							return;
+						}
+						((Aluno) u).setDisciplinas(d.getNomeDisciplina());
 						((Aluno) u).setQtdDisciplina(((Aluno) u).getQtdDisciplina() + 1);
+						d.setAlunosMatriculados(((Aluno) u).getMatricula());
 						System.out.println("\nPedido aceito.\n");
 						return;
 					}
@@ -239,4 +300,27 @@ public class Sistema {
 	public static void exibirBoletim(int matricula) {
 		System.out.println("chamou");
 	}
+	
+	public static void exibirRelatorioDeTurmas() {
+		
+		int[] alunosMatriculados;
+		
+		for(Disciplina d : disciplinas) {
+			System.out.println("\n\nDisciplina: " + d.getNomeDisciplina());
+			System.out.println("\nProfessor: " + d.getNomeProfessor() + "\n");
+			alunosMatriculados = d.getAlunosMatriculados();
+			for(int i = 0; i < alunosMatriculados.length; ++i) {
+				for(Usuario u : usuarios) {
+					if(u instanceof Aluno) {
+						if(((Aluno) u).getMatricula() == alunosMatriculados[i]) {
+							if(u.getNome() != null)
+							System.out.println(u.getNome());
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
 }

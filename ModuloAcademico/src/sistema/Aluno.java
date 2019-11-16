@@ -8,7 +8,6 @@ public class Aluno extends Usuario {
 	private int periodo;
 	private int qtdDisciplinas;
 	private String[] disciplinas;
-	private Scanner entrada;
 	
 	public Aluno() {
 		super();
@@ -52,12 +51,13 @@ public class Aluno extends Usuario {
 	@Override
 	public void criarConta() {
 		// TODO Auto-generated method stub
-		super.criarLogin();
+		super.criarPerfil();
 		entrada = new Scanner(System.in);
 		System.out.print("\nNumero de matricula: ");
 		this.matricula = entrada.nextInt();
 		System.out.print("\nPeriodo atual: ");
 		this.periodo = entrada.nextInt();
+		System.out.println("");
 	}
 
 	@Override

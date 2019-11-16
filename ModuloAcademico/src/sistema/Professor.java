@@ -6,7 +6,6 @@ public class Professor extends Usuario {
 
 	private int qtdDisciplinas;
 	private String[] disciplinas;
-	private Scanner entrada;
 	
 	public Professor() {
 		super();
@@ -34,7 +33,7 @@ public class Professor extends Usuario {
 	@Override
 	public void criarConta() {
 		// TODO Auto-generated method stub
-		super.criarLogin();
+		super.criarPerfil();
 		System.out.println("");
 	}
 

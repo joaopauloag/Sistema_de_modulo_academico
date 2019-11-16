@@ -38,10 +38,19 @@ public class Disciplina {
 		return alunosMatriculados;
 	}
 
-	public void setAlunosMatriculados(int[] matriculasAlunos) {
-		this.alunosMatriculados = matriculasAlunos;
+	public void setAlunosMatriculados(int alunoMatriculado) {
+		for(int i = 0; i < alunosMatriculados.length; i++) {
+			if(alunosMatriculados[i] == 0) {
+				alunosMatriculados[i] = alunoMatriculado;
+				return;
+			}
+		}
 	}
 
+	public boolean alunosMatriculadosCheio() {
+		return(alunosMatriculados[29] != 0);
+	}
+	
 	public int[] getFaltasAlunos() {
 		return faltasAlunos;
 	}
@@ -57,19 +66,14 @@ public class Disciplina {
 	public void setNotasAlunos(double[][] notasAlunos) {
 		this.notasAlunos = notasAlunos;
 	}
-
 	
 	public ArrayList<Integer> getSolicitacoes() {
 		return solicitacoes;
 	}
-	
 
 	public void setSolicitacoes(int solicitacao) {
 		this.solicitacoes.add(solicitacao);
 	}
-
-	
-
 
 	
 }
