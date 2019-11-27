@@ -28,6 +28,15 @@ public class Professor extends Usuario {
 	public void setDisciplinas(String[] disciplinas) {
 		this.disciplinas = disciplinas;
 	}
+	
+	public void setDisciplina(String disciplina) {
+		for(int i = 0; i < 4; i++) {
+			if(disciplinas[i] == null) {
+				disciplinas[i] = disciplina;
+				break;
+			}
+		}
+	}
 
 	
 	@Override
@@ -57,9 +66,9 @@ public class Professor extends Usuario {
 			opcao = entrada.nextInt();
 			
 			if(opcao == 1) {
-				Sistema.lancarNota();
+				escolherTurma(1);
 			} else if(opcao == 2) {
-				Sistema.lancarFrequencia();
+				escolherTurma(2);
 			} else if(opcao == 3) {
 				super.alterarSenha();
 			} else if(opcao == 0) {
@@ -68,6 +77,39 @@ public class Professor extends Usuario {
 				System.out.println("\nOpcao invalida!");
 			}
 		}
+	}
+	
+	public void escolherTurma(int j) {
+		
+		String disciplina;
+		entrada = new Scanner(System.in);
+		
+		if(qtdDisciplinas == 0) {
+			System.out.println("\nVoce ainda nao possui uma turma.");
+			return;
+		}
+		System.out.println("\nSuas turmas:");
+		for(int i = 0; i < 4; i++) {
+			if(disciplinas[i] != null) {
+				System.out.println(disciplinas[i]);
+			}
+		}
+		System.out.print("\nEscolha uma turma: ");
+		disciplina = entrada.nextLine();
+		for(int i = 0; i < 4; i++) {
+			if(disciplinas[i] != null) {
+				if(disciplina.equalsIgnoreCase(disciplinas[i]) && j == 1) {
+					Sistema.lancarNota(disciplina);
+					return;
+				}
+				if(disciplina.equalsIgnoreCase(disciplinas[i]) && j == 2) {
+					Sistema.lancarFrequencia(disciplina);
+					return;
+				}
+			}
+		}
+		System.out.println("\nTurma nao encontrada!");
+		return;
 	}
 
 	

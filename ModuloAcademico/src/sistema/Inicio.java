@@ -34,6 +34,7 @@ public class Inicio {
 				System.out.println("\nOpcao invalida!");
 			}
 		}
+		
 	}
 		
 }

@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class Aluno extends Usuario {
 
 	private int matricula;
-	private int periodo;
 	private int qtdDisciplinas;
 	private String[] disciplinas;
 	
@@ -22,10 +21,6 @@ public class Aluno extends Usuario {
 	public void setMatricula(int matricula) {
 		this.matricula = matricula;
 	}
-
-	public int getPeriodo() {
-		return periodo;
-	}
 	
 	public int getQtdDisciplina() {
 		return qtdDisciplinas;
@@ -33,10 +28,6 @@ public class Aluno extends Usuario {
 	
 	public void setQtdDisciplina(int qtdDisciplina) {
 		this.qtdDisciplinas = qtdDisciplina;
-	}
-
-	public void setPeriodo(int periodo) {
-		this.periodo = periodo;
 	}
 
 	public String[] getDisciplinas() {
@@ -52,11 +43,6 @@ public class Aluno extends Usuario {
 	public void criarConta() {
 		// TODO Auto-generated method stub
 		super.criarPerfil();
-		entrada = new Scanner(System.in);
-		System.out.print("\nNumero de matricula: ");
-		this.matricula = entrada.nextInt();
-		System.out.print("\nPeriodo atual: ");
-		this.periodo = entrada.nextInt();
 		System.out.println("");
 	}
 

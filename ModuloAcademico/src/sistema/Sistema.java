@@ -2,6 +2,7 @@ package sistema;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Sistema {
 	
@@ -66,10 +67,38 @@ public class Sistema {
 					return;
 				}
 				u.criarConta();
+				if(u instanceof Aluno) {
+					((Aluno) u).setMatricula(gerarMatricula());
+				}
 				return;
 			}
 		}
 		System.out.println("\nSeu acesso ainda nao foi concedido!");
+	}
+	
+	private int gerarMatricula() {
+		
+		int matricula;
+		boolean aux;
+		Random gerador = new Random();
+		
+		while(true) {
+			aux = true;
+			matricula =  gerador.nextInt(10000) + 1;
+			
+			for(Usuario u : usuarios) {
+				if(!(u instanceof Aluno)) {
+					continue;
+				}
+				if(((Aluno) u).getMatricula() == matricula) {
+					aux = false;
+					break;
+				}
+			}
+			if(aux) {
+				return matricula;
+			}
+		}
 	}
 	
 	private boolean procurarCoordenador() {
@@ -139,6 +168,7 @@ public class Sistema {
 					if(u.getNome().equals(nome)) {
 						novaDisciplina.setNomeProfessor(nome);
 						((Professor) u).setQtdDisciplinas(((Professor) u).getQtdDisciplinas() + 1);
+						((Professor) u).setDisciplina(novaDisciplina.getNomeDisciplina());
 						disciplinas.add(novaDisciplina);
 						System.out.println("\nTurma criada!");
 						return;
@@ -240,7 +270,7 @@ public class Sistema {
 		for(Usuario u : usuarios) {
 			if(u instanceof Aluno) {
 				if(((Aluno) u).getMatricula() == i) {
-					System.out.println("\nPeriodo: " + ((Aluno) u).getPeriodo() + "\tAluno: " + u.getNome());
+					System.out.println("\nAluno: " + u.getNome());
 					System.out.print("(S) para aceitar, qualquer outra tecla para recusar: ");
 					opcao = entrada.nextLine();
 					if(opcao.equalsIgnoreCase("s")) {
@@ -261,12 +291,79 @@ public class Sistema {
 		}
 	}
 	
-	public static void lancarNota() {
-		System.out.println("chamou");
+	public static void lancarNota(String disciplina) {
+
+		int avaliacao;
+		double nota;
+		
+		entrada = new Scanner(System.in);
+		System.out.print("\n(1)AV1\t(2)AV2\t(3)REAV: ");
+		avaliacao = entrada.nextInt();
+		
+		for(Disciplina d : disciplinas) {
+			if(!d.getNomeDisciplina().equalsIgnoreCase(disciplina)) {
+				continue;
+			}
+			for(int i = 0; i < 30; i++) {
+				if(d.getAluno(i) == 0) {
+					continue;
+				}
+				do {
+					System.out.print(procurarAluno(d.getAluno(i)) + "\t");
+					nota = entrada.nextDouble();
+					if(nota >= 0 && nota <= 10) {
+						d.setNotaAluno(i, avaliacao, nota);
+						if(avaliacao == 2) {
+							d.setNotaAluno(i, 0, (d.getNotaAluno(i,1) + d.getNotaAluno(i,2))/2);
+						} else if(avaliacao == 3) {
+							d.setNotaAluno(i, 0, (max(d.getNotaAluno(i,1), d.getNotaAluno(i,2)) 
+									+ nota) / 2);
+						}
+						break;
+					}
+				} while(true);
+			}
+		}
 	}
 	
-	public static void lancarFrequencia() {
-		System.out.println("chamou");
+	private static double max(double nota1, double nota2) {
+		return (nota1 > nota2)? nota1 : nota2;
+	}
+	
+	public static void lancarFrequencia(String disciplina) {
+		
+		String chamada;
+		
+		entrada = new Scanner(System.in);
+		System.out.println("\n(p) presente\t(f) ausente");
+		
+		for(Disciplina d : disciplinas) {
+			if(!d.getNomeDisciplina().equalsIgnoreCase(disciplina)) {
+				continue;
+			}
+			for(int i = 0; i < 30; i++) {
+				if(d.getAluno(i) == 0) {
+					continue;
+				}
+				System.out.print(procurarAluno(d.getAluno(i)) + "\t");
+				chamada = entrada.nextLine();
+				if(chamada.equalsIgnoreCase("f")) {
+					d.setFalta(i);
+				}
+			}
+		}
+	}
+	
+	private static String procurarAluno(int i) {
+		
+		for(Usuario u : usuarios) {
+			if(u instanceof Aluno) {
+				if(((Aluno) u).getMatricula() == i) {
+					return u.getNome();
+				}
+			}
+		}
+		return null;
 	}
 	
 	public static void solicitarMatricula(int matricula, int qtdDisciplinas) {
@@ -298,10 +395,25 @@ public class Sistema {
 	}
 	
 	public static void exibirBoletim(int matricula) {
-		System.out.println("chamou");
+		
+		System.out.println("\n\nAB 1\tAB 2\tREAV\tMEDIA\tFALTAS\n");
+
+		for(Disciplina d : disciplinas) {
+			for(int i = 0; i < d.getAlunosMatriculados().length; i++) {
+				if(d.getAluno(i) == matricula) {
+					System.out.print(d.getNotaAluno(i, 1) + "\t");
+					System.out.print(d.getNotaAluno(i, 2) + "\t");
+					System.out.print(d.getNotaAluno(i, 3) + "\t");
+					System.out.print(d.getNotaAluno(i, 0) + "\t");
+					System.out.print(d.getFaltaAluno(i) + "\t");
+					System.out.println(d.getNomeDisciplina());
+					break;
+				}
+			}
+		}
 	}
 	
-	public static void exibirRelatorioDeTurmas() {
+	public static void exibirRelatorioDeCoordenador() {
 		
 		int[] alunosMatriculados;
 		
