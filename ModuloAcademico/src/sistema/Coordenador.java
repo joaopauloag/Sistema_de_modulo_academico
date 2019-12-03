@@ -24,7 +24,6 @@ public class Coordenador extends Professor {
 		// TODO Auto-generated method stub
 		
 		int opcao;
-		
 		entrada = new Scanner(System.in);
 		
 		while(true) {
@@ -40,7 +39,15 @@ public class Coordenador extends Professor {
 			System.out.println("(0) SAIR");
 			System.out.println("*****************************************");
 	
-			opcao = entrada.nextInt();
+			while(true) {
+				try {
+					opcao = Integer.parseInt(entrada.next());
+				} catch(NumberFormatException e) {
+					System.out.println("\nEntrada invalida!");
+					continue;
+				}
+				break;
+			}
 	
 			if(opcao == 1) {
 				Sistema.criarNovaTurma();

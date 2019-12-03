@@ -29,7 +29,16 @@ public class Sistema {
 			System.out.println("(2) Professor");
 			System.out.println("(3) Coordenador");
 			System.out.println("(0) VOLTAR");
-			opcao = entrada.nextInt();
+
+			while(true) {
+				try {
+					opcao = Integer.parseInt(entrada.next());
+				} catch(NumberFormatException e) {
+					System.out.println("\nEntrada invalida!");
+					continue;
+				}
+				break;
+			}
 			
 			if(opcao == 1 || opcao == 2) {
 				procurarUsuario();
@@ -117,7 +126,6 @@ public class Sistema {
 		String senha;
 		
 		entrada = new Scanner(System.in);
-		
 		System.out.print("\nEmail: ");
 		email = entrada.nextLine();
 		
@@ -264,7 +272,6 @@ public class Sistema {
 	
 	private static void avaliarSolicitacao(int i, Disciplina d) {
 		
-		String opcao;
 		entrada = new Scanner(System.in);
 		
 		for(Usuario u : usuarios) {
@@ -272,13 +279,11 @@ public class Sistema {
 				if(((Aluno) u).getMatricula() == i) {
 					System.out.println("\nAluno: " + u.getNome());
 					System.out.print("(S) para aceitar, qualquer outra tecla para recusar: ");
-					opcao = entrada.nextLine();
-					if(opcao.equalsIgnoreCase("s")) {
+					if(entrada.next().equalsIgnoreCase("s")) {
 						if(d.alunosMatriculadosCheio()) {
 							System.out.println("\nA turma ja esta lotada!\n");
 							return;
 						}
-						((Aluno) u).setDisciplinas(d.getNomeDisciplina());
 						((Aluno) u).setQtdDisciplina(((Aluno) u).getQtdDisciplina() + 1);
 						d.setAlunosMatriculados(((Aluno) u).getMatricula());
 						System.out.println("\nPedido aceito.\n");
@@ -293,12 +298,26 @@ public class Sistema {
 	
 	public static void lancarNota(String disciplina) {
 
-		int avaliacao;
-		double nota;
+		int avaliacao = 0;
+		double nota = 0;
 		
 		entrada = new Scanner(System.in);
-		System.out.print("\n(1)AV1\t(2)AV2\t(3)REAV: ");
-		avaliacao = entrada.nextInt();
+		
+		while(true) {
+			System.out.print("\n(1)AV1\t(2)AV2\t(3)REAV: ");
+			try {
+				avaliacao = Integer.parseInt(entrada.next());
+			} catch(NumberFormatException e) {
+				System.out.println("\nEntrada invalida!");
+				continue;
+			} finally {
+				if(avaliacao < 1 || avaliacao > 3) {
+					System.out.println("\nOpcao invalida!");
+					continue;
+				}
+			}
+			break;
+		}
 		
 		for(Disciplina d : disciplinas) {
 			if(!d.getNomeDisciplina().equalsIgnoreCase(disciplina)) {
@@ -308,20 +327,29 @@ public class Sistema {
 				if(d.getAluno(i) == 0) {
 					continue;
 				}
-				do {
+				while(true) {
 					System.out.print(procurarAluno(d.getAluno(i)) + "\t");
-					nota = entrada.nextDouble();
-					if(nota >= 0 && nota <= 10) {
-						d.setNotaAluno(i, avaliacao, nota);
-						if(avaliacao == 2) {
-							d.setNotaAluno(i, 0, (d.getNotaAluno(i,1) + d.getNotaAluno(i,2))/2);
-						} else if(avaliacao == 3) {
-							d.setNotaAluno(i, 0, (max(d.getNotaAluno(i,1), d.getNotaAluno(i,2)) 
-									+ nota) / 2);
+					try {
+						nota = Double.parseDouble(entrada.next());
+					} catch(NumberFormatException e) {
+						System.out.println("\nEntrada invalida!");
+						continue;
+					} finally {
+						if(nota < 0 || nota > 10) {
+							System.out.println("\nNota = [0 : 10]");
+							continue;
 						}
-						break;
 					}
-				} while(true);
+					break;
+				}
+				
+				d.setNotaAluno(i, avaliacao, nota);
+				if(avaliacao == 2) {
+					d.setNotaAluno(i, 0, (d.getNotaAluno(i,1) + d.getNotaAluno(i,2))/2);
+				} else if(avaliacao == 3) {
+					d.setNotaAluno(i, 0, (max(d.getNotaAluno(i,1), d.getNotaAluno(i,2)) 
+							+ nota) / 2);
+				}
 			}
 		}
 	}

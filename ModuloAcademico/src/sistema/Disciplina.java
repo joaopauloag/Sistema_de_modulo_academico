@@ -55,32 +55,16 @@ public class Disciplina {
 		return(alunosMatriculados[29] != 0);
 	}
 	
-	public int[] getFaltasAlunos() {
-		return faltasAlunos;
-	}
-	
 	public int getFaltaAluno(int i) {
 		return faltasAlunos[i];
-	}
-
-	public void setFaltasAlunos(int[] faltasAlunos) {
-		this.faltasAlunos = faltasAlunos;
 	}
 	
 	public void setFalta(int i) {
 		this.faltasAlunos[i]++;
 	}
-
-	public double[][] getNotasAlunos() {
-		return notasAlunos;
-	}
 	
 	public double getNotaAluno(int aluno, int avaliacao) {
 		return this.notasAlunos[aluno][avaliacao];
-	}
-
-	public void setNotasAlunos(double[][] notasAlunos) {
-		this.notasAlunos = notasAlunos;
 	}
 	
 	public void setNotaAluno(int aluno, int avaliacao, double nota) {

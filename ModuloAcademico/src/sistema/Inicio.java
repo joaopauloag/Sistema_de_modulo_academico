@@ -22,7 +22,15 @@ public class Inicio {
 			System.out.println("(0) SAIR");
 			System.out.println("*****************");
 			
-			opcao = entrada.nextInt();
+			while(true) {
+				try {
+					opcao = Integer.parseInt(entrada.next());
+				} catch(NumberFormatException e) {
+					System.out.println("\nEntrada invalida!");
+					continue;
+				}
+				break;
+			}
 			
 			if(opcao == 1) {
 				sistema.criarConta();

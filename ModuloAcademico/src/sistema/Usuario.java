@@ -18,10 +18,6 @@ public abstract class Usuario {
 		this.senha = null;
 	}
 	
-	public String getCpf() {
-		return cpf;
-	}
-	
 	public void setCpf(String cpf) {
 		if(cpf.length() == 11) {
 			this.cpf = cpf;
@@ -77,10 +73,22 @@ public abstract class Usuario {
 		System.out.println("\nBem vindo ao Modulo Academico! Agora informe os seguintes dados:");
 		System.out.print("\nNome completo: ");
 		nome = entrada.nextLine();
-		do {
+
+		while(true) {
 			System.out.print("\nCPF (somente os 11 digitos): ");
-			cpf = entrada.nextLine();
-		} while(cpf.length() != 11);
+			try {
+				cpf = String.valueOf(entrada.nextLong());
+			} catch(NumberFormatException e) {
+				System.out.println("\nEntrada invalida!");
+				continue;
+			} finally {
+				if(cpf.length() != 11) {
+					System.out.println("\nVoce nao digitou os 11 digitos do cpf.");
+					continue;
+				}
+			}
+			break;
+		}
 	}
 	
 	public void alterarSenha() {

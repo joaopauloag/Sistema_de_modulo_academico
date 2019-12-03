@@ -6,12 +6,10 @@ public class Aluno extends Usuario {
 
 	private int matricula;
 	private int qtdDisciplinas;
-	private String[] disciplinas;
 	
 	public Aluno() {
 		super();
 		qtdDisciplinas = 0;
-		disciplinas = new String[8];
 	}
 
 	public int getMatricula() {
@@ -30,14 +28,6 @@ public class Aluno extends Usuario {
 		this.qtdDisciplinas = qtdDisciplina;
 	}
 
-	public String[] getDisciplinas() {
-		return disciplinas;
-	}
-
-	public void setDisciplinas(String disciplina) {
-		this.disciplinas[this.qtdDisciplinas] = disciplina;
-	}
-
 	
 	@Override
 	public void criarConta() {
@@ -51,7 +41,6 @@ public class Aluno extends Usuario {
 		// TODO Auto-generated method stub
 		
 		int opcao;
-		
 		entrada = new Scanner(System.in);
 		
 		while(true) {
@@ -62,7 +51,15 @@ public class Aluno extends Usuario {
 			System.out.println("(0) SAIR");
 			System.out.println("***********************");
 			
-			opcao = entrada.nextInt();
+			while(true) {
+				try {
+					opcao = Integer.parseInt(entrada.next());
+				} catch(NumberFormatException e) {
+					System.out.println("\nEntrada invalida!");
+					continue;
+				}
+				break;
+			}
 			
 			if(opcao == 1) {
 				Sistema.solicitarMatricula(matricula, qtdDisciplinas);
